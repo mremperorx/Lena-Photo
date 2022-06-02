@@ -1,0 +1,22 @@
+clear all;
+close all;
+clc;
+
+w = 600; %j
+h = 400; %i
+
+mira = zeros(h, w, 3); %double pixles
+
+for i = 1:h
+  for j = 1:w
+    
+    mira(i,j,1) = floor((j-1)/300)/1;  %R
+    mira(i,j,2) = mod(floor((j-1)/150), 2);  %G 0%2=0, 1%2=1, 2%2=0.... 0G0G
+    mira(i,j,3) = mod(floor((j-1)/75), 2);   %B 0B0B0B0B
+  end
+end
+
+figure('color', [0.95, 0.95, 1]);
+imshow(mira);
+
+imwrite(mira, 'mira_color_apk.png');

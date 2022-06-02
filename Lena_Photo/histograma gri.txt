@@ -1,0 +1,45 @@
+clear all;
+close all;
+clc;
+
+pkg load image; %Only for Octave
+
+img = imread('C:\...\lena.png');
+[h, w] = size(img);
+
+%Histograma imaginii
+hist = zeros(1, 256); %nr linii=1 %nr coloane=256
+
+for i = 1:h
+  for j = 1:w
+    p = img(i, j);                %citim o val de pixel
+    hist(p+1) = hist(p+1) + 1;
+  end
+end
+
+figure;
+plot(hist);
+
+figure;
+imhist(img);
+
+%Histograma cumulativa
+%...
+
+figure;
+plot(cumsum(hist));
+
+%NOTES:
+%Histograma - h(i) =  nr. de pixeli cu val=i
+%Histograma in octave - h(i)= nr de pixeli cu val=i-1
+%h(7) = nr de pixeli cu val 6
+%
+%Histograma cumulativa - hc(i) = nr. de pixeli cu valoarea <= i, in octave (<=-1) - aspect crescator /
+%hc(i+1)=hc(i)+h(i+1)
+%
+%nr total de pixeli din imagine= wxh
+%
+%EXEMPLU:
+%hist(p+1)=hist(p+1)+1
+%p=6
+%hist(7) = hist(7)+1

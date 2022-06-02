@@ -1,0 +1,50 @@
+clear all;
+close all;
+clc;
+
+pkg load image; %Only for Octave
+
+img = imread('C:\...\lena.png'); 
+img = double(img) / 255; %pixeli double -> [0 ... 1]
+figure;
+imshow(img);
+
+%Suprapunere zgomot Gaussian
+m_z = 0; %media zgomotului (axa y)
+v_z = 0.01; %varianta zgomotului (axa x)
+img_z = imnoise(img, 'gaussian', m_z, v_z);
+figure;
+imshow(img_z);
+
+[h, w] = size(img_z) %inaltime, latime
+result = zeros(h,w);
+
+%Filtrare cu masca 3x3 (filtru liniar) ftj, filtru de netezire
+mask = 1/9 * ones(3,3);
+
+for i = 2:h-1                            %nu incape masca pe linia 1/coloana 1, incepem de pe a 2 a
+  for j = 2:w-1
+    window = img_z(i-1:i+1, j-1:j+1);   %i-1:i+1 limitele mastii, in jurul originii i,j
+    prod = mask .* window;              %inmultire element cu element
+    result(i,j) = sum(sum(prod));       %suma col, inca odata => suma elementelor
+  end
+end
+
+figure;
+imshow(result);
+
+
+%Filtrare cu masca 5x5 
+%...
+mask = 1/25 * ones(5,5);
+
+for i = 3:h-2                            %nu incape masca pe linia 1/coloana 1, incepem de pe a 2 a
+  for j = 3:w-2                          %chenar floor(l/2), partea intreaga a lui l, ex: l=5 => chenar=2
+    window = img_z(i-2:i+2, j-2:j+2);   %i-1:i+1 limitele mastii, in jurul originii i,j
+    prod = mask .* window;              %inmultire element cu element
+    result(i,j) = sum(sum(prod));       %suma col, inca odata => suma elementelor
+  end
+end
+
+figure;
+imshow(result);

@@ -1,0 +1,36 @@
+clear all;
+close all;
+clc;
+
+pkg load image; %Only for Octave
+
+img = imread('lena.png'); 
+img = double(img) / 255; %pixeli double -> [0 ... 1]
+figure;
+imshow(img);
+
+%Suprapunere zgomot de tip sare si piper
+p_z = 0.15; %densitatea zgomotului (%)
+img_z = imnoise(img, 'salt & pepper', p_z);
+figure;
+imshow(img_z);
+
+[h, w] = size(img_z) %inaltime, latime
+result = zeros(h,w);
+
+%Filtrare cu fereastra 3x3
+for i = 2:h-1
+  for j = 2:w-1
+    window = img_z(i-1:i+1, j-1:j+1);
+    vector = window(:); %transforma matricea intr-un vector coloana
+    sorted_vector = sort(vector);
+    result(i,j) = sorted_vector(5);
+  end
+end
+
+figure;
+imshow(result);
+
+
+%Filtrare cu fereastra 5x5
+...

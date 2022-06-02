@@ -1,0 +1,27 @@
+clear all;
+close all;
+clc;
+
+img = imread('C:\...\lena_color.png'); 
+figure;
+imshow(img);
+
+figure;
+imshow(rgb2gray(img));
+
+%Y intensitatea luminoasa
+%Y = 0.299 * R + 0.587 * G + 0.114 * B 
+%...
+
+[h, w, c] = size(img) %inaltime, latime, numar de canale
+result = uint8(zeros(h,w,1));
+
+
+for i = 1:h
+  for j = 1:w
+    result(i,j) = 0.299 * img(i,j,1) + 0.587 * img(i,j,2) + 0.114 * img(i,j,3);
+  end
+end
+
+figure;
+imshow(result);

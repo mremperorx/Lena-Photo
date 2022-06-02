@@ -1,0 +1,29 @@
+clear all;
+close all;
+clc;
+
+pkg load image; %dOnly for Octave
+
+img = imread('lena.png'); 
+img = double(img) / 255; %pixeli double -> [0 ... 1]
+figure;
+imshow(img);
+
+
+[h, w] = size(img) %inaltime, latime
+result = zeros(h,w);
+
+%Filtrare cu masca 3x3
+mask = [0 1 0; 1 -4 1; 0 1 0];
+K = -0.3; %pondere
+
+for i = 2:h-1
+  for j = 2:w-1
+    window = img(i-1:i+1, j-1:j+1);
+    prod = mask .* window;
+    result(i,j) = img(i,j) + K*sum(sum(prod));
+  end
+end
+
+figure;
+imshow(result);
